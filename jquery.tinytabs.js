@@ -8,7 +8,9 @@
 			startIndex		: 0,
 			classActive		: 'on',
 			onEvent			: 'click',
-			stripHash		: true
+			stripHash		: true,
+			afterShowTab	: function () {},
+			beforeShowTab	: function () {}
 		};
 	
 	var methods = {
@@ -39,6 +41,10 @@
 			
 				var element = '',
 					hash = '=';
+					
+				if (typeof d.afterShowTab == 'function' ) {
+					d.afterShowTab.call(this);
+				}
 				
 				if (tab === parseInt(tab)) {
 					element = $(d.panelSelector + ':eq(' + tab + ')', $(this));
@@ -57,6 +63,10 @@
 				
 				$(d.navSelector + " a[" + d.fromAttr + hash + element.attr(d.toAttr) + "]", $(this)).addClass(d.classActive).siblings().removeClass(d.classActive);
 				element.show().siblings(d.panelSelector).hide();
+				
+				if (typeof d.beforeShowTab == 'function' ) {
+					d.beforeShowTab.call(this);
+				}
 			
 			});
 			
